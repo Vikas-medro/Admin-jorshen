@@ -49,7 +49,11 @@ const login2 = ({ navigation }) => {
       });
 
       // Save JWT token so news-service calls can authenticate
-      const authToken = res.data?.token || res.data?.accessToken || res.data?.data?.token;
+      const authToken =
+        res.data?.data?.accessToken ||
+        res.data?.data?.token ||
+        res.data?.accessToken ||
+        res.data?.token;
       if (authToken) {
         await AsyncStorage.setItem('authToken', authToken);
       }
@@ -98,7 +102,11 @@ const login2 = ({ navigation }) => {
       });
 
       // Save JWT token so news-service calls can authenticate
-      const authToken = res.data?.token || res.data?.accessToken || res.data?.data?.token;
+      const authToken =
+        res.data?.data?.accessToken ||
+        res.data?.data?.token ||
+        res.data?.accessToken ||
+        res.data?.token;
       if (authToken) {
         await AsyncStorage.setItem('authToken', authToken);
       }

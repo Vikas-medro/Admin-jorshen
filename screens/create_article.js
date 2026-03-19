@@ -46,26 +46,62 @@ export default function CreateArticleScreen({ navigation }) {
     fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
-    try {
-      setLoadingCats(true);
-      const res = await NEWS_API.get('/categories');
-      const cats = res.data?.data || res.data || [];
-      setCategories(Array.isArray(cats) ? cats : []);
-    } catch (err) {
-      console.warn('Could not load categories from backend, using defaults:', err.message);
-      // Fallback to static list if backend is unreachable
-      setCategories([
-        { id: 1, name: 'Technology' }, { id: 2, name: 'Politics' },
-        { id: 3, name: 'Business' },   { id: 4, name: 'Sports' },
-        { id: 5, name: 'Entertainment' }, { id: 6, name: 'Health' },
-        { id: 7, name: 'Science' },    { id: 8, name: 'World' },
-      ]);
-    } finally {
-      setLoadingCats(false);
-    }
-  };
+const fetchCategories = async () => {
+  try {
+    setLoadingCats(true);
 
+    const res = await NEWS_API.get('/categories');
+
+    console.log('API RESPONSE 👉', res.data);
+
+    let cats = [];
+
+    if (Array.isArray(res.data?.data)) {
+      cats = res.data.data;
+    }
+
+    // 🚨 IMPORTANT FIX: handle empty array
+    if (!cats || cats.length === 0) {
+      console.warn('No categories from API, using fallback');
+
+      cats = [
+        { id: 1, name: 'Technology' },
+        { id: 2, name: 'Politics' },
+        { id: 3, name: 'Business' },
+        { id: 4, name: 'Sports' },
+        { id: 5, name: 'Entertainment' },
+        { id: 6, name: 'Health' },
+        { id: 7, name: 'Science' },
+        { id: 8, name: 'World' },
+      ];
+    }
+
+    // Normalize
+    const normalized = cats.map((item, index) => ({
+      id: item.id || item._id || index + 1,
+      name: item.name || item.title || 'Unnamed',
+    }));
+
+    setCategories(normalized);
+
+  } catch (err) {
+    console.warn('API failed, using fallback:', err.message);
+
+    setCategories([
+      { id: 1, name: 'Technology' },
+      { id: 2, name: 'Politics' },
+      { id: 3, name: 'Business' },
+      { id: 4, name: 'Sports' },
+      { id: 5, name: 'Entertainment' },
+      { id: 6, name: 'Health' },
+      { id: 7, name: 'Science' },
+      { id: 8, name: 'World' },
+    ]);
+
+  } finally {
+    setLoadingCats(false);
+  }
+};
   // ─── Media Picker ────────────────────────────────────────────────
   const pickMedia = async () => {
     try {
