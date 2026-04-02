@@ -8,19 +8,20 @@ WebBrowser.maybeCompleteAuthSession();
 
 const create_account = ({ navigation }) => {
 
-  // ✅ Redirect URI for Expo
+  //  Redirect URI for Expo
   const redirectUri = AuthSession.makeRedirectUri({
     useProxy: true,
   });
 
-  // ✅ Google Auth Request
+  //  Google Auth Request
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: '616137550294-4vik65p98fb3beu9u60u9to8b54j4bm7.apps.googleusercontent.com',
     redirectUri,
     scopes: ['profile', 'email'],
   });
 
-  // ✅ Handle response
+  //  Handle response
+  
   useEffect(() => {
     if (response?.type === 'success') {
       const { authentication } = response;
@@ -30,11 +31,11 @@ const create_account = ({ navigation }) => {
     }
   }, [response]);
 
-  // ✅ Google button function
+  //  Google button function
   const signInWithGoogle = () => {
     promptAsync({ useProxy: true });
   };
- 
+
   return (
     <View style={styles.container}>
       <Image
@@ -52,7 +53,7 @@ const create_account = ({ navigation }) => {
 
       {/* Google button */}
       <TouchableOpacity onPress={signInWithGoogle} style={styles.googleBtn}>
-        <View style={{flexDirection:'row',alignItems:'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
             source={require('../assets/Images/google_icon.png')}
             style={styles.googleIcon}
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
 
-  googleIcon:{
+  googleIcon: {
     width: 28,
     height: 28,
     marginRight: 10
@@ -134,8 +135,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-    borderWidth:1,
-    borderColor:'#ddd'
+    borderWidth: 1,
+    borderColor: '#ddd'
   },
 
   googleText: {

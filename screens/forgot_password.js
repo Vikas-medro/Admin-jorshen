@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   StatusBar
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/Ionicons';
 
 const forgot_password = ({ navigation }) => {
   const [email, setEmail] = useState('');
